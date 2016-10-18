@@ -4,7 +4,7 @@ from django.utils.http import urlquote
 from m_user.models import Muser
 from django.http import HttpResponse
 from urllib import urlopen
-import re
+import re,json
 # Create your views here.
 GITHUB_AUTHORIZE_URL = 'https://github.com/login/oauth/authorize'
 GITHUB_CLIENTID = '1fa8c369d5e0de863df2'  
@@ -23,10 +23,10 @@ def getaccess_token(data):
     match = pattern.match(str(data))
     return str(match.group(1))
 
-def oauth_github(request):
-    if request.method=='POST':
-        return  HttpResponse(str(request.POST.get('access_token','')))         
-    if request.GET.get('code',''):
+def 
+
+def oauth_github(request):       
+    if request.GET.get('code',''):#Then get access_token
         code = request.GET.get('code','')
         data = {
             #'grant_type': 'authorization_code',
@@ -36,15 +36,14 @@ def oauth_github(request):
             'redirect_uri': 'http://182.254.132.38/oauth/github',        
             'state':'test',
         }  
-        #return HttpResponseRedirect("https://github.com/login/oauth/access_token?"+getGETdata(data))
         webdata = urlopen("https://github.com/login/oauth/access_token?"+getGETdata(data)).read()
-        return HttpResponse(getaccess_token(webdata))
-    else:
+        userdata = urlopen("https://api.github.com/user?access_token="+getaccess_token(webdata)).read()
+        userdata = json.loads(userdata)
+        print userdata
+        return HttpResponse(userdata)
+    else:#first :get code
         data = {
-            #'grant_type': 'authorization_code',
             'client_id': '9eeff0489380af861366',
-            #'client_secret': '394455b79fd571b04e241bc208edc720fd2fea57',
-            #'code': code,
             'redirect_uri': 'http://182.254.132.38/oauth/github',        
             'state':'test',
         }
