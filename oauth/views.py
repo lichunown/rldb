@@ -18,10 +18,11 @@ def getGETdata(data):
     print temp
     return temp
 def getaccess_token(data):
-    pattern = re.compile(r'access_token=(.*?)')
+    print "data=%s" % data
+    pattern = re.compile(r'access_token=(.*?)&')
     match = pattern.match(str(data))
-    return match.group(1)
-    
+    return str(match.group(1))
+
 def oauth_github(request):
     if request.method=='POST':
         return  HttpResponse(str(request.POST.get('access_token','')))         
