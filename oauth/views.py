@@ -4,6 +4,7 @@ from django.utils.http import urlquote
 from m_user.models import Muser
 from django.http import HttpResponse
 from urllib import urlopen
+import re
 # Create your views here.
 GITHUB_AUTHORIZE_URL = 'https://github.com/login/oauth/authorize'
 GITHUB_CLIENTID = '1fa8c369d5e0de863df2'  
@@ -16,7 +17,11 @@ def getGETdata(data):
         temp += "%s=%s&" % (item,urlquote(data[item]))
     print temp
     return temp
-
+def getaccess_token(data):
+    pattern = re.compile(r'access_token=(.*?)')
+    match = pattern.match(str(data))
+    return match.group(1)
+    
 def oauth_github(request):
     if request.method=='POST':
         return  HttpResponse(str(request.POST.get('access_token','')))         
@@ -32,7 +37,7 @@ def oauth_github(request):
         }  
         #return HttpResponseRedirect("https://github.com/login/oauth/access_token?"+getGETdata(data))
         webdata = urlopen("https://github.com/login/oauth/access_token?"+getGETdata(data)).read()
-        return HttpResponse(str(webdata))
+        return HttpResponse(getaccess_token(webdata))
     else:
         data = {
             #'grant_type': 'authorization_code',
