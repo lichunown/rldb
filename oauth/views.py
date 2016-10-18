@@ -23,10 +23,10 @@ def oauth_github(request):
         'code': code,
         'redirect_uri': GITHUB_CALLBACK,        
     }
-
+#https://graph.qq.com/oauth2.0/authorize?response_type=token&client_id=1105688899&redirect_uri=http%3A//182.254.132.38/oauth/tencent/get&scope=get_user_info
 def oauth_tencent(request):
     data = {
-        'response_type':"token",
+        'response_type':"code",
         'client_id':'1105688899',
         'redirect_uri':'http://182.254.132.38/oauth/tencent/get',
         #'expires_in':'7776000',
