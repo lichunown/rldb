@@ -16,13 +16,29 @@ def getGETdata(data):
     return temp
 
 def oauth_github(request):
-    content = {
-        'grant_type': 'authorization_code',
-        'client_id': GITHUB_CLIENTID,
-        'client_secret': GITHUB_CLIENTSECRET,
-        'code': code,
-        'redirect_uri': GITHUB_CALLBACK,        
-    }
+    if request.GET.get('code',''):
+        code = request.GET.get('code','')
+        data = {
+            #'grant_type': 'authorization_code',
+            'client_id': '9eeff0489380af861366',
+            'client_secret': '394455b79fd571b04e241bc208edc720fd2fea57',
+            'code': code,
+            'redirect_uri': 'http://182.254.132.38/oauth/github',        
+            'state':'test',
+        }  
+        return HttpResponseRedirect("https://github.com/login/oauth/access_token?"+getGETdata(data))
+    elif request.GET.get('access_token',''):
+        return  HttpResponse(str(request.GET.get('access_token','')))       
+    else:
+        data = {
+            #'grant_type': 'authorization_code',
+            'client_id': '9eeff0489380af861366',
+            #'client_secret': '394455b79fd571b04e241bc208edc720fd2fea57',
+            #'code': code,
+            'redirect_uri': 'http://182.254.132.38/oauth/github',        
+            'state':'test',
+        }
+        return HttpResponseRedirect("https://github.com/login/oauth/authorize?"+getGETdata(data))      
 #https://graph.qq.com/oauth2.0/authorize?response_type=token&client_id=1105688899&redirect_uri=http%3A//182.254.132.38/oauth/tencent/get&scope=get_user_info
 def oauth_tencent(request):
     data = {
