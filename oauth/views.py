@@ -41,7 +41,7 @@ def oauth_github(request):
         userdata = urlopen("https://api.github.com/user?access_token="+getaccess_token(webdata)).read()
         userdata = json.loads(userdata)
         print userdata
-        return HttpResponse(userdata)
+        return HttpResponse(str(userdata))
     else:#first :get code
         data = {
             'client_id': '9eeff0489380af861366',
