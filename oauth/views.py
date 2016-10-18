@@ -29,8 +29,6 @@ def oauth_github(request):
             'state':'test',
         }  
         return HttpResponseRedirect("https://github.com/login/oauth/access_token?"+getGETdata(data))
-    elif request.GET.get('access_token',''):
-      
     else:
         data = {
             #'grant_type': 'authorization_code',
