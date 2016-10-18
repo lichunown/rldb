@@ -16,6 +16,8 @@ def getGETdata(data):
     return temp
 
 def oauth_github(request):
+    if request.method=='POST':
+        return  HttpResponse(str(request.POST.get('access_token','')))         
     if request.GET.get('code',''):
         code = request.GET.get('code','')
         data = {
@@ -28,7 +30,7 @@ def oauth_github(request):
         }  
         return HttpResponseRedirect("https://github.com/login/oauth/access_token?"+getGETdata(data))
     elif request.GET.get('access_token',''):
-        return  HttpResponse(str(request.GET.get('access_token','')))       
+      
     else:
         data = {
             #'grant_type': 'authorization_code',
