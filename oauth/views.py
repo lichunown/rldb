@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.utils.http import urlquote
 from m_user.models import Muser
+from urllib import urlopen
 # Create your views here.
 GITHUB_AUTHORIZE_URL = 'https://github.com/login/oauth/authorize'
 GITHUB_CLIENTID = '1fa8c369d5e0de863df2'  
@@ -28,7 +29,9 @@ def oauth_github(request):
             'redirect_uri': 'http://182.254.132.38/oauth/github',        
             'state':'test',
         }  
-        return HttpResponseRedirect("https://github.com/login/oauth/access_token?"+getGETdata(data))
+        #return HttpResponseRedirect("https://github.com/login/oauth/access_token?"+getGETdata(data))
+        webdata = urlopen("https://github.com/login/oauth/access_token?"+getGETdata(data)).read()
+        return HttpResponse(str(webdata))
     else:
         data = {
             #'grant_type': 'authorization_code',
