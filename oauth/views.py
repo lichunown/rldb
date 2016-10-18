@@ -23,7 +23,8 @@ def getaccess_token(data):
     match = pattern.match(str(data))
     return str(match.group(1))
 
-def 
+def datasave(data,platform):
+    pass
 
 def oauth_github(request):       
     if request.GET.get('code',''):#Then get access_token
