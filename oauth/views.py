@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.utils.http import urlquote
 from m_user.models import Muser
+from django.http import HttpResponse
 from urllib import urlopen
 # Create your views here.
 GITHUB_AUTHORIZE_URL = 'https://github.com/login/oauth/authorize'
