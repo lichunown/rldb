@@ -5,8 +5,8 @@ from m_user.models import Muser
 from django.http import HttpResponse
 from urllib import urlopen
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
 import re,json
+from m_user.views import userexist,ologin,ologup
 # Create your views here.
 GITHUB_AUTHORIZE_URL = 'https://github.com/login/oauth/authorize'
 GITHUB_CLIENTID = '1fa8c369d5e0de863df2'  
@@ -31,23 +31,10 @@ def datasave(request,data,platform):
         mlogin = data['login']#username
         name = data['name']
         u_id = str(data['id'])
-        # print 'username:%s' % data['login']
-        # print 'name:%s' % data['name']
-        # print 'id :%s' % str(data['id'])
-        if Muser.objects.filter(u_id=u_id):#account is exist
-            user = authenticate(username=mlogin, password='admin')
-            login(request,user)
-            return ({'result':'exist','username':mlogin,'name':name,},request)
-        else:#account is not exist
-            user = User()
-            user.username = mlogin
-            user.set_password('admin')
-            user.save()
-            muser = Muser(user=user,u_id=u_id,truename=name)
-            muser.save()
-            user = authenticate(username=mlogin, password='admin')            
-            login(request,user)
-            return ({'result':'new','username':mlogin,'name':name,},request)
+        if userexist(mlogin):
+            return ologin(request,mlogin)
+        else:
+            return ologup(request,mlogin,'admin',u_id=u_id,name=name)
 
 def oauth_github(request):       
     if request.GET.get('code',''):#Then get access_token
@@ -63,11 +50,7 @@ def oauth_github(request):
         webdata = urlopen("https://github.com/login/oauth/access_token?"+getGETdata(data)).read()
         userdata = urlopen("https://api.github.com/user?access_token="+getaccess_token(webdata)).read()
         userdata = json.loads(userdata)
-        (data,request) = datasave(request,userdata,'github')
-        if data['result']=='new':
-            return HttpResponse("create new account.")
-        elif data['result']=='exist':
-            return HttpResponse("have login")
+        return datasave(request,userdata,'github')
     else:#first :get code
         data = {
             'client_id': '9eeff0489380af861366',
