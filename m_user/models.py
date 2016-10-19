@@ -23,11 +23,12 @@ COLLEGES=(
 class Muser(models.Model):
     user = models.OneToOneField(User)
     u_id = models.CharField(max_length=100,blank=True,default='')
-    birthday = models.DateField(blank=True,default=None)
+    truename = models.CharField(max_length=50,blank=True,default='')
+    birthday = models.DateField(blank=True,default=None,null=True)
     university = models.CharField(max_length=50,blank=True,default='西安电子科技大学')
-    college=models.CharField(max_length=50,choices=COLLEGES,blank=True,default=None)
-    major=models.CharField(max_length=50,blank=True,null=True)
-    introduction=models.TextField(blank=True,null=True)
+    college=models.CharField(max_length=50,choices=COLLEGES,blank=True,null=True,default=None)
+    major=models.CharField(max_length=50,blank=True,null=True,default=None)
+    introduction=models.TextField(blank=True,null=True,default =None)
     #img = models.ImageField(upload_to = 'media/', default = 'media/default/no-img.jpg')
     def __unicode__(self):
         if self.u_id:
