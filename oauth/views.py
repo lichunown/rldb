@@ -4,6 +4,7 @@ from django.utils.http import urlquote
 from m_user.models import Muser
 from django.http import HttpResponse
 from urllib import urlopen
+from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 import re,json
 # Create your views here.
