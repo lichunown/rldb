@@ -24,7 +24,11 @@ def getaccess_token(data):
     return str(match.group(1))
 
 def datasave(data,platform):
-    pass
+    print data
+    if platform=='github':
+        print 'username:%s' % data['login']
+        print 'name:%s' % data['name']
+        print 'id :%s' % str(data['id'])
 
 def oauth_github(request):       
     if request.GET.get('code',''):#Then get access_token
@@ -40,7 +44,7 @@ def oauth_github(request):
         webdata = urlopen("https://github.com/login/oauth/access_token?"+getGETdata(data)).read()
         userdata = urlopen("https://api.github.com/user?access_token="+getaccess_token(webdata)).read()
         userdata = json.loads(userdata)
-        print userdata
+        print datasave(userdata,'github')
         return HttpResponse(str(userdata))
     else:#first :get code
         data = {
