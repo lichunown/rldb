@@ -39,7 +39,9 @@ def datasave(request,data,platform):
             login(request,user)
             return ({'result':'exist','username':mlogin,'name':name,},request)
         else:#account is not exist
-            user = User(username=mlogin,password='admin')
+            user = User()
+            user.username = mlogin
+            user.set_password('admin')
             user.save()
             muser = Muser(user=user,u_id=u_id,truename=name)
             muser.save()
